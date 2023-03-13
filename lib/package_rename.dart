@@ -16,6 +16,7 @@ library package_rename;
 
 import 'dart:convert';
 
+import 'package:args/args.dart';
 import 'package:html/parser.dart' as html;
 import 'package:logger/logger.dart';
 import 'package:universal_io/io.dart';
@@ -63,9 +64,19 @@ void set(List<String> args) {
   try {
     _logger.w(_majorTaskDoneLine);
 
-    if (!_configFileExists()) throw _PackageRenameErrors.filesNotFound;
+    final parser = ArgParser()
+      ..addOption(
+        _fileOption,
+        abbr: 'f',
+        help: 'Path to config file',
+        defaultsTo: '',
+      );
 
-    final config = _getConfig();
+    final argResults = parser.parse(args);
+
+    if (!_configFileExists(argResults[_fileOption] as String)) throw _PackageRenameErrors.filesNotFound;
+
+    final config = _getConfig(argResults[_fileOption] as String);
     if (config == null) throw _PackageRenameErrors.configNotFound;
 
     _setAndroidConfigurations(config['android']);
@@ -87,16 +98,19 @@ void set(List<String> args) {
   }
 }
 
-bool _configFileExists() {
+bool _configFileExists(String customConfigFileName) {
+  final argFileName = File(customConfigFileName);
   final configFile = File(_packageRenameConfigFileName);
   final pubspecFile = File(_pubspecFileName);
-  return configFile.existsSync() || pubspecFile.existsSync();
+  return argFileName.existsSync() || configFile.existsSync() || pubspecFile.existsSync();
 }
 
-Map<String, dynamic>? _getConfig() {
-  final yamlFile = File(_packageRenameConfigFileName).existsSync()
-      ? File(_packageRenameConfigFileName)
-      : File(_pubspecFileName);
+Map<String, dynamic>? _getConfig(String customConfigFileName) {
+  final yamlFile = File(customConfigFileName).existsSync()
+      ? File(customConfigFileName)
+      : File(_packageRenameConfigFileName).existsSync()
+          ? File(_packageRenameConfigFileName)
+          : File(_pubspecFileName);
 
   final yamlString = yamlFile.readAsStringSync();
   final parsedYaml = yaml.loadYaml(yamlString) as Map;

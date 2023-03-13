@@ -4,6 +4,7 @@ part of package_rename;
 // ? Root
 const _packageRenameConfigFileName = 'package_rename_config.yaml';
 const _pubspecFileName = 'pubspec.yaml';
+const _fileOption = 'file';
 
 // ? Android
 const _androidManifestFileName = 'AndroidManifest.xml';
@@ -75,14 +76,10 @@ const _androidProfileDirName = 'profile';
 
 // ! File Paths
 // ? Android
-const _androidMainManifestFilePath =
-    '$_androidSrcDirPath/$_androidMainDirName/$_androidManifestFileName';
-const _androidDebugManifestFilePath =
-    '$_androidSrcDirPath/$_androidDebugDirName/$_androidManifestFileName';
-const _androidProfileManifestFilePath =
-    '$_androidSrcDirPath/$_androidProfileDirName/$_androidManifestFileName';
-const _androidAppLevelBuildGradleFilePath =
-    '$_androidAppDirPath/$_buildGradleFileName';
+const _androidMainManifestFilePath = '$_androidSrcDirPath/$_androidMainDirName/$_androidManifestFileName';
+const _androidDebugManifestFilePath = '$_androidSrcDirPath/$_androidDebugDirName/$_androidManifestFileName';
+const _androidProfileManifestFilePath = '$_androidSrcDirPath/$_androidProfileDirName/$_androidManifestFileName';
+const _androidAppLevelBuildGradleFilePath = '$_androidAppDirPath/$_buildGradleFileName';
 
 // ? iOS
 const _iosInfoPlistFilePath = '$_iosRunnerDirPath/$_infoPlistFileName';
